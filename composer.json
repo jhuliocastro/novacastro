@@ -1,0 +1,18 @@
+{
+  "author": "Jhúlio Castro",
+  "autoload": {
+    "psr-4": {
+      "Models\\": "sources/Models",
+      "App\\": "sources/App"
+    },
+    "files": [
+      "config.php"
+    ]
+  },
+  "require": {
+    "coffeecode/router": "^1.0",
+    "league/plates": "^3.4",
+    "coffeecode/datalayer": "^1.1",
+    "jhuliocastro/alertas": "^1.0"
+  }
+}
