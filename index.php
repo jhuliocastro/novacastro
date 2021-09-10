@@ -14,4 +14,8 @@ $router->get("/logout", "Login:logout");
 $router->group("painel");
 $router->get("/", "Painel:home");
 
+$router->group("celpe");
+$router->post("/", "Celpe:home");
+$router->get("/{codigoBarras}", "Celpe:dados");
+
 $router->dispatch();

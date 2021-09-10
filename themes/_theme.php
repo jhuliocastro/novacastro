@@ -43,7 +43,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 
     <div class="content-holder">
         <div class="section" id="contas">
-            <button class="ribbon-button" onclick="Metro.dialog.open('#dialogContratos')">
+            <button class="ribbon-button" onclick="celpe()">
                 <span class="icon">
                     <img src="/assets/img/celpe.png">
                 </span>
@@ -61,6 +61,23 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
 <!-- END NAVBAR -->
 <?= $this->section("content"); ?>
 <!-- Metro 4 -->
+
+<div class="dialog" data-role="dialog" id="dialogCelpe">
+    <form action="/celpe" method="post">
+        <div class="dialog-title">Celpe</div>
+        <div class="dialog-content">
+            <div class="form-group">
+                <label>Código de Barras</label>
+                <input data-role="input" id="codigoBarrasCelpe" name="codigoBarrasCelpe">
+            </div>
+        </div>
+        <div class="dialog-actions">
+            <button type="button" class="button js-dialog-close">Voltar</button>
+            <button type="submit" class="button primary js-dialog-close">Consultar</button>
+        </div>
+    </form>
+</div>
+
 <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
@@ -69,13 +86,18 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
     });
 
     function desloader(){
-        $("#loader").animate({top: 0}, 1000).fadeOut();
-        $("#carrega").animate({top: 0}, 1000).fadeOut();
+        $("#loader").animate(1000).fadeOut("slow");
+        $("#carrega").animate(1000).fadeOut("slow");
     }
 
     function loader(){
-        $("#loader").animate({top: 0}, 1000).fadeIn();
-        $("#carrega").animate({top: 0}, 1000).fadeIn();
+        $("#loader").animate(1000).fadeIn("slow");
+        $("#carrega").animate(1000).fadeIn("slow");
+    }
+
+    function celpe(){
+        Metro.dialog.open('#dialogCelpe');
+        $("#codigoBarrasCelpe").focus();
     }
 </script>
 <?= $this->section("scripts"); ?>
