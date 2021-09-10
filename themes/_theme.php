@@ -69,13 +69,13 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
     });
 
     function desloader(){
-        $("#loader").delay(500).fadeOut("slow");
-        $("#carrega").delay(500).fadeOut("slow");
+        $("#loader").animate({top: 0}, 1000).fadeOut();
+        $("#carrega").animate({top: 0}, 1000).fadeOut();
     }
 
     function loader(){
-        $("#loader").delay(100).fadeIn("slow");
-        $("#carrega").delay(100).fadeIn("slow");
+        $("#loader").animate({top: 0}, 1000).fadeIn();
+        $("#carrega").animate({top: 0}, 1000).fadeIn();
     }
 </script>
 <?= $this->section("scripts"); ?>
