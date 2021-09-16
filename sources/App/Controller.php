@@ -17,7 +17,11 @@ class Controller{
         echo $template->render($view, $dados);
     }
 
-    public function log($descricao, $usuario){
+    public function log($descricao, $usuario = null){
+        if($usuario == null){
+            session_start();
+            $usuario = $_SESSION["usuario"];
+        }
         $log = new Log_Model();
         $log->cadastrar($descricao, $usuario);
     }

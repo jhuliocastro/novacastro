@@ -19,5 +19,7 @@ $router->post("/", "Celpe:home");
 $router->get("/{codigoBarras}", "Celpe:dados");
 $router->post("/pagamento", "Celpe:pagamento");
 $router->get("/cancelar", "Celpe:cancelar");
+$router->get("/aceitar/{codigoBarras}/{valor}", "Celpe:aceitar");
+$router->get("/comprovante/{id}", "Celpe:comprovante");
 
 $router->dispatch();

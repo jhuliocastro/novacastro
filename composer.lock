@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5092c45e2003e4fd6e21c60ad68f1ab2",
+    "content-hash": "ca8d92c362a550f2be379234979e3e7e",
     "packages": [
         {
             "name": "coffeecode/datalayer",
@@ -110,16 +110,16 @@
         },
         {
             "name": "jhuliocastro/alertas",
-            "version": "v1.0.2",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhuliocastro/sweet-alert.git",
-                "reference": "f25edc853fa24b6e82ccf00f0c82a24f812aff11"
+                "reference": "599cb1bb0f0621d747f7fe96da9c4758bf9c2f1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhuliocastro/sweet-alert/zipball/f25edc853fa24b6e82ccf00f0c82a24f812aff11",
-                "reference": "f25edc853fa24b6e82ccf00f0c82a24f812aff11",
+                "url": "https://api.github.com/repos/jhuliocastro/sweet-alert/zipball/599cb1bb0f0621d747f7fe96da9c4758bf9c2f1d",
+                "reference": "599cb1bb0f0621d747f7fe96da9c4758bf9c2f1d",
                 "shasum": ""
             },
             "require": {
@@ -143,9 +143,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jhuliocastro/sweet-alert/issues",
-                "source": "https://github.com/jhuliocastro/sweet-alert/tree/v1.0.2"
+                "source": "https://github.com/jhuliocastro/sweet-alert/tree/v2.0.0"
             },
-            "time": "2021-03-18T17:16:08+00:00"
+            "time": "2021-09-16T22:20:54+00:00"
         },
         {
             "name": "league/plates",
@@ -266,5 +266,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
