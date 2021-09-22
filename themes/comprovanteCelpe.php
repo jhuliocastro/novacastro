@@ -17,10 +17,10 @@ $this->data["empresa"] = NOME_EMPRESA;
     </style>
 
     <script type="text/javascript">
-        window.print();
+       window.print();
     </script>
     <script type="text/javascript">
-        window.close();
+       window.close();
     </script>
 
 </head>
