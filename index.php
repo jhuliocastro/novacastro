@@ -22,4 +22,15 @@ $router->get("/cancelar", "Celpe:cancelar");
 $router->get("/aceitar/{codigoBarras}/{valor}", "Celpe:aceitar");
 $router->get("/comprovante/{id}", "Celpe:comprovante");
 
+$router->group("compesa");
+$router->post("/", "Compesa:home");
+$router->get("/{codigoBarras}", "Compesa:dados");
+$router->get("/aceitar/{codigoBarras}/{valor}", "Compesa:aceitar");
+$router->get("/cancelar", "Compesa:cancelar");
+$router->get("/comprovante/{id}", "Compesa:comprovante");
+
 $router->dispatch();
+
+if ($router->error()) {
+    var_dump($router->error());
+}

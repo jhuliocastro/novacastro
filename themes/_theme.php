@@ -49,7 +49,7 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
                 </span>
                 <span class="caption">Celpe</span>
             </button>
-            <button class="ribbon-button" onclick="window.location.href='/clientes/cadastrar'">
+            <button class="ribbon-button" onclick="compesa()">
                 <span class="icon">
                     <img src="/assets/img/compesa.png">
                 </span>
@@ -69,6 +69,22 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
             <div class="form-group">
                 <label>Código de Barras</label>
                 <input data-role="input" id="codigoBarrasCelpe" name="codigoBarrasCelpe">
+            </div>
+        </div>
+        <div class="dialog-actions">
+            <button type="button" class="button js-dialog-close">Voltar</button>
+            <button type="submit" class="button primary js-dialog-close">Consultar</button>
+        </div>
+    </form>
+</div>
+
+<div class="dialog" data-role="dialog" id="dialogCompesa">
+    <form action="/compesa" method="post">
+        <div class="dialog-title">Compesa</div>
+        <div class="dialog-content">
+            <div class="form-group">
+                <label>Código de Barras</label>
+                <input data-role="input" id="codigoBarrasCompesa" name="codigoBarrasCompesa">
             </div>
         </div>
         <div class="dialog-actions">
@@ -98,6 +114,11 @@ if ( session_status() !== PHP_SESSION_ACTIVE )
     function celpe(){
         Metro.dialog.open('#dialogCelpe');
         $("#codigoBarrasCelpe").focus();
+    }
+
+    function compesa(){
+        Metro.dialog.open('#dialogCompesa');
+        $("#codigoBarrasCompesa").focus();
     }
 </script>
 <?= $this->section("scripts"); ?>
