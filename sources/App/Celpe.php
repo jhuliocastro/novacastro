@@ -16,7 +16,7 @@ class Celpe extends Controller{
         $retorno = BoletoValidator::convenio($codigoBarras);
         switch($retorno){
             case true:
-                $this->router->redirect("/celpe/".$codigoBarras);
+                $this->router->redirect("/celpe/".$codigoBarras."/troco");
                 break;
             case false:
                 Alert::warning("CÓDIGO DE BARRAS INCORRETO!", "VERIQUE E TENTE NOVAMENTE", "/painel");
@@ -33,11 +33,12 @@ class Celpe extends Controller{
     }
 
     public function aceitar($data){
+        var_dump($data);
         $celpe = new Celpe_Model();
-        $retorno = $celpe->salvar($data["valor"], $data["codigoBarras"]);
+        $retorno = $celpe->salvar($data["valor"], $data["codigoBarras"], $data["troco"]);
         if($retorno != false){
             echo "<script>window.open(\"/celpe/comprovante/$retorno\", '_blank');</script>";
-            Alert::cron("success", "PAGAMENTO REALIZADO!", "AGUARDE A IMPRESSÃO DO COMPROVANTE.", "/painel", 5);
+            Alert::cron("success", "PAGAMENTO REALIZADO! Troco: R$ ".$data["troco"], "AGUARDE A IMPRESSÃO DO COMPROVANTE.", "/painel", 20);
         }else{
             Alert::error("ERRO AO REALIZAR PAGAMENTO!", "CONSULTE O LOG PARA MAIS INFORMAÇÕES.", "/painel");
         }
@@ -68,12 +69,40 @@ class Celpe extends Controller{
         return $valor;
     }
 
+    public function infoTroco($data){
+        Alert::input("Informe o valor pago pelo cliente", "text", "/celpe/".$data["codigoBarras"]);
+    }
+
+    private function comparar($valor1, $valor2){
+        $valor1 = str_replace("R$ ", "", $valor1);
+        $valor2 = str_replace("R$ ", "", $valor2);
+        $valor1 = str_replace(",", ".", $valor1);
+        $valor2 = str_replace(",", ".", $valor2);
+        if($valor1 > $valor2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private function calcularTroco($valorPago, $valorConta){
+        $valorPago = str_replace("R$ ", "", $valorPago);
+        $valorConta = str_replace("R$ ", "", $valorConta);
+        $valorPago = str_replace(",", ".", $valorPago);
+        $valorConta = str_replace(",", ".", $valorConta);
+        $troco = $valorPago - $valorConta;
+        $troco = str_replace(".", ",", $troco);
+        return $troco;
+    }
+
     public function dados($dados){
-        Alert::question("Confirma pagamento da conta no valor de ".self::valor($dados["codigoBarras"])."?", self::valor($dados["codigoBarras"]), "/celpe/aceitar/".$dados["codigoBarras"]."/".self::valor($dados["codigoBarras"]), "/celpe/cancelar");
-        die();
-        parent::render("celpe", [
-            "codigoBarras" => $dados["codigoBarras"],
-            "valor" => self::valor($dados["codigoBarras"])
-        ]);
+        $valorConta  = self::valor($dados["codigoBarras"]);
+        $comparar = $this->comparar($dados["valorPago"], $valorConta);
+        if($comparar == false){
+            Alert::error("Realize o pagamento novamente!", "Valor pago pelo cliente é inferior ao valor da conta.", "/painel");
+            exit();
+        }
+        $troco = $this->calcularTroco($dados["valorPago"], $valorConta);
+        Alert::question("Confirma pagamento da conta no valor de ".$valorConta."?", $dados["codigoBarras"], "/celpe/aceitar/".$dados["codigoBarras"]."/".$valorConta."/".$troco, "/celpe/cancelar");
     }
 }
