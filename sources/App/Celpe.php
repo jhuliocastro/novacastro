@@ -33,7 +33,6 @@ class Celpe extends Controller{
     }
 
     public function aceitar($data){
-        var_dump($data);
         $celpe = new Celpe_Model();
         $retorno = $celpe->salvar($data["valor"], $data["codigoBarras"], $data["troco"]);
         if($retorno != false){
