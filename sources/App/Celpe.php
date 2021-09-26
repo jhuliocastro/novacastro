@@ -77,7 +77,7 @@ class Celpe extends Controller{
         $valor2 = str_replace("R$ ", "", $valor2);
         $valor1 = str_replace(",", ".", $valor1);
         $valor2 = str_replace(",", ".", $valor2);
-        if($valor1 > $valor2){
+        if($valor1 > $valor2 || $valor1 == $valor2){
             return true;
         }else{
             return false;
