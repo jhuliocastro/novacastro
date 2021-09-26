@@ -35,7 +35,6 @@ class Compesa extends Controller{
             exit();
         }
         $troco = $this->calcularTroco($dados["valorPago"], $valorConta);
-        Alert::question("Confirma pagamento da conta no valor de ".$valorConta."?", $dados["codigoBarras"], "/celpe/aceitar/".$dados["codigoBarras"]."/".$valorConta."/".$troco, "/celpe/cancelar");
         Alert::question("Confirma pagamento da conta no valor de ".$valorConta."?", $dados["codigoBarras"], "/compesa/aceitar/".$dados["codigoBarras"]."/".$valorConta."/".$troco, "/compesa/cancelar");
     }
 
@@ -65,7 +64,7 @@ class Compesa extends Controller{
     }
 
     public function infoTroco($data){
-        Alert::input("Informe o valor pago pelo cliente", "text", "/celpe/".$data["codigoBarras"]);
+        Alert::input("Informe o valor pago pelo cliente", "text", "/compesa/".$data["codigoBarras"]);
     }
 
     private function comparar($valor1, $valor2){

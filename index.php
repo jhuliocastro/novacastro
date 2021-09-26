@@ -27,7 +27,7 @@ $router->group("compesa");
 $router->post("/", "Compesa:home");
 $router->get("/{codigoBarras}/{valorPago}", "Compesa:dados");
 $router->get("/{codigoBarras}/troco", "Compesa:infoTroco");
-$router->get("/aceitar/{codigoBarras}/{valor}", "Compesa:aceitar");
+$router->get("/aceitar/{codigoBarras}/{valor}/{troco}", "Compesa:aceitar");
 $router->get("/cancelar", "Compesa:cancelar");
 $router->get("/comprovante/{id}", "Compesa:comprovante");
 
