@@ -10,11 +10,12 @@ class Compesa_Model extends DataLayer{
         parent::__construct("contas", [], "id", true);
     }
 
-    public function salvar($valor, $codigoBarras){
+    public function salvar($valor, $codigoBarras, $troco){
         $valor = str_replace("R$ ", "", $valor);
         $this->valor = $valor;
         $this->codigoBarras = $codigoBarras;
         $this->tipo = "compesa";
+        $this->troco = $troco;
         $this->save();
         if($this->fail()){
             $controller = new Controller();

@@ -16,7 +16,7 @@ class Compesa extends Controller{
         $retorno = BoletoValidator::convenio($codigoBarras);
         switch($retorno){
             case true:
-                $this->router->redirect("/compesa/".$codigoBarras);
+                $this->router->redirect("/compesa/".$codigoBarras."/troco");
                 break;
             case false:
                 Alert::warning("CÓDIGO DE BARRAS INCORRETO!", "VERIQUE E TENTE NOVAMENTE", "/painel");
@@ -28,7 +28,15 @@ class Compesa extends Controller{
     }
 
     public function dados($dados){
-        Alert::question("Confirma pagamento da conta no valor de ".self::valor($dados["codigoBarras"])."?", self::valor($dados["codigoBarras"]), "/compesa/aceitar/".$dados["codigoBarras"]."/".self::valor($dados["codigoBarras"]), "/compesa/cancelar");
+        $valorConta  = self::valor($dados["codigoBarras"]);
+        $comparar = $this->comparar($dados["valorPago"], $valorConta);
+        if($comparar == false){
+            Alert::error("Realize o pagamento novamente!", "Valor pago pelo cliente é inferior ao valor da conta.", "/painel");
+            exit();
+        }
+        $troco = $this->calcularTroco($dados["valorPago"], $valorConta);
+        Alert::question("Confirma pagamento da conta no valor de ".$valorConta."?", $dados["codigoBarras"], "/celpe/aceitar/".$dados["codigoBarras"]."/".$valorConta."/".$troco, "/celpe/cancelar");
+        Alert::question("Confirma pagamento da conta no valor de ".$valorConta."?", $dados["codigoBarras"], "/compesa/aceitar/".$dados["codigoBarras"]."/".$valorConta."/".$troco, "/compesa/cancelar");
     }
 
     private static function valor($codigoBarras){
@@ -47,13 +55,39 @@ class Compesa extends Controller{
 
     public function aceitar($data){
         $compesa = new Compesa_Model();
-        $retorno = $compesa->salvar($data["valor"], $data["codigoBarras"]);
+        $retorno = $compesa->salvar($data["valor"], $data["codigoBarras"], $data["troco"]);
         if($retorno != false){
             echo "<script>window.open(\"/compesa/comprovante/$retorno\", '_blank');</script>";
-            Alert::cron("success", "PAGAMENTO REALIZADO!", "AGUARDE A IMPRESSÃO DO COMPROVANTE.", "/painel", 5);
+            Alert::cron("success", "PAGAMENTO REALIZADO! Troco: R$ ".$data["troco"], "AGUARDE A IMPRESSÃO DO COMPROVANTE.", "/painel", 20);
         }else{
             Alert::error("ERRO AO REALIZAR PAGAMENTO!", "CONSULTE O LOG PARA MAIS INFORMAÇÕES.", "/painel");
         }
+    }
+
+    public function infoTroco($data){
+        Alert::input("Informe o valor pago pelo cliente", "text", "/celpe/".$data["codigoBarras"]);
+    }
+
+    private function comparar($valor1, $valor2){
+        $valor1 = str_replace("R$ ", "", $valor1);
+        $valor2 = str_replace("R$ ", "", $valor2);
+        $valor1 = str_replace(",", ".", $valor1);
+        $valor2 = str_replace(",", ".", $valor2);
+        if($valor1 > $valor2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private function calcularTroco($valorPago, $valorConta){
+        $valorPago = str_replace("R$ ", "", $valorPago);
+        $valorConta = str_replace("R$ ", "", $valorConta);
+        $valorPago = str_replace(",", ".", $valorPago);
+        $valorConta = str_replace(",", ".", $valorConta);
+        $troco = $valorPago - $valorConta;
+        $troco = str_replace(".", ",", $troco);
+        return $troco;
     }
 
     public function comprovante($data){
