@@ -26,6 +26,12 @@ class Controller{
         $log->cadastrar($descricao, $usuario);
     }
 
+    public function renderAviso($texto, $endereco){
+        echo "$texto";
+        echo "<br/>";
+        echo "<a href=\"$endereco\">Voltar</a>";
+    }
+
     private function userActive(){
         session_start();
         if(!isset($_SESSION["usuario"])):

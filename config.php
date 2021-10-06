@@ -1,5 +1,5 @@
 <?php
-const URL_BASE = "http://novasolucoes/";
+const URL_BASE = "http://localhost/";
 const NOME_EMPRESA = "NOVA CASTRO";
 
 define("DATA_LAYER_CONFIG", [

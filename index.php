@@ -15,6 +15,7 @@ $router->group("painel");
 $router->get("/", "Painel:home");
 
 $router->group("celpe");
+$router->get("/", "Celpe:codigoBarras");
 $router->post("/", "Celpe:home");
 $router->get("/{codigoBarras}/{valorPago}", "Celpe:dados");
 $router->get("/{codigoBarras}/troco", "Celpe:infoTroco");

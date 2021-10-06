@@ -19,7 +19,7 @@ class Login extends Controller{
         $login = new Login_Model();
         $retorno = $login->login($codigoAcesso);
         if($retorno != 1){
-            Alert::error("Código de Acesso Incorreto!", "Verifique e tente novamente.", "/");
+            parent::renderAviso("Código de Acesso Incorreto!", "/");
         }else{
             session_start();
             $dados = $login->dados($codigoAcesso);

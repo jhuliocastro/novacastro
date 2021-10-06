@@ -27,6 +27,10 @@ class Celpe extends Controller{
         }
     }
 
+    public function codigoBarras(){
+        parent::render("celpeCodigoBarras");
+    }
+
     public function cancelar(){
         parent::log("CANCELOU PAGAMENTO CELPE");
         Alert::info("Pagamento Cancelado com Sucesso!", "", "/painel");
