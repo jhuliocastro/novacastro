@@ -17,11 +17,11 @@ $router->get("/", "Painel:home");
 $router->group("celpe");
 $router->get("/", "Celpe:codigoBarras");
 $router->post("/", "Celpe:home");
-$router->get("/{codigoBarras}/{valorPago}", "Celpe:dados");
+$router->post("/{codigoBarras}", "Celpe:dados");
 $router->get("/{codigoBarras}/troco", "Celpe:infoTroco");
 $router->post("/pagamento", "Celpe:pagamento");
 $router->get("/cancelar", "Celpe:cancelar");
-$router->get("/aceitar/{codigoBarras}/{valor}/{troco}", "Celpe:aceitar");
+$router->post("/aceitar", "Celpe:aceitar");
 $router->get("/comprovante/{id}", "Celpe:comprovante");
 
 $router->group("compesa");

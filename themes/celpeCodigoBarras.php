@@ -2,19 +2,19 @@
 $this->data["empresa"] = NOME_EMPRESA;
 $this->layout("_theme", $this->data); ?>
 
-<form method="post" action="/celpe/pagamento">
-    <div class="card">
-        <div class="card-header">
-            Pagamento de Covênio - <strong>CELPE</strong>
+<form method="post" action="/celpe">
+    <div>
+        <div>
+            <strong>###PAGAMENTO DE CONVÊNIO - CELPE###</strong>
         </div>
-        <div class="card-content p-2">
+        <div>
             <div class="form-group">
                 <label>Código de Barras</label>
-                <input style="width: 1000px;" type="text" name="codigoBarras">
+                <input style="width: 100%;" type="text" name="codigoBarrasCelpe">
             </div>
         </div>
-        <div class="card-footer">
-            <button type="submit" class="button primary">LER</button>
+        <div>
+            <button type="submit">LER</button>
         </div>
     </div>
 </form>

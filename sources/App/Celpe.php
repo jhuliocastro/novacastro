@@ -13,18 +13,20 @@ class Celpe extends Controller{
 
     public function home(){
         $codigoBarras = $_POST["codigoBarrasCelpe"];
-        $retorno = BoletoValidator::convenio($codigoBarras);
+        $retorno = BoletoValidator::convenio($codigoBarras); 
+        echo "aqui";       
         switch($retorno){
             case true:
                 $this->router->redirect("/celpe/".$codigoBarras."/troco");
                 break;
             case false:
-                Alert::warning("CÓDIGO DE BARRAS INCORRETO!", "VERIQUE E TENTE NOVAMENTE", "/painel");
+                parent::renderAviso("CÓDIGO DE BARRAS INCORRETO! VERIFIQUE E TENTE NOVAMENTE.", "/painel");            
                 break;
             default:
-                Alert::error("OCORREU UM ERRO AO PROCESSAR DADOS!", "ENTRE EM CONTATO COM O ADMINISTRADOR DO SISTEMA", "/painel");
+                parent::renderAviso("OCORREU UM ERRO AO PROCESSAR DADOS! ENTRE EM CONTATO COM O ADMINISTRADOR DO SISTEMA.", "/painel"); 
                 break;
         }
+
     }
 
     public function codigoBarras(){
@@ -36,14 +38,16 @@ class Celpe extends Controller{
         Alert::info("Pagamento Cancelado com Sucesso!", "", "/painel");
     }
 
-    public function aceitar($data){
+    public function aceitar(){
+        $troco = $this->calcularTroco($_POST["valorPago"], $_POST["valorConta"]);
         $celpe = new Celpe_Model();
-        $retorno = $celpe->salvar($data["valor"], $data["codigoBarras"], $data["troco"]);
+        $retorno = $celpe->salvar($_POST["valorConta"], $_POST["codigoBarras"], $troco);
         if($retorno != false){
-            echo "<script>window.open(\"/celpe/comprovante/$retorno\", '_blank');</script>";
-            Alert::cron("success", "PAGAMENTO REALIZADO! Troco: R$ ".$data["troco"], "AGUARDE A IMPRESSÃO DO COMPROVANTE.", "/painel", 20);
+            $output = shell_exec("pr -l 5 -o -8 -W 32 /etc/network/interfaces > /dev/lp0");
+            var_dump($output);
+            parent::renderAviso("PAGAMENTO REALIZADO!<br/>TROCO: <strong>R$ $troco</strong><br/>IMPRIMINDO O COMPROVANTE...", "/painel");
         }else{
-            Alert::error("ERRO AO REALIZAR PAGAMENTO!", "CONSULTE O LOG PARA MAIS INFORMAÇÕES.", "/painel");
+            parent::renderAviso("ERRO AO REALIZAR PAGAMENTO! CONSULTE O LOG PARA MAIS INFORMAÇÕES.", "/painel");
         }
     }
 
@@ -73,7 +77,10 @@ class Celpe extends Controller{
     }
 
     public function infoTroco($data){
-        Alert::input("Informe o valor pago pelo cliente", "text", "/celpe/".$data["codigoBarras"]);
+        parent::render("celpeValorPago", [
+            "codigoBarras" => $data["codigoBarras"],
+            "valorConta" => $valorConta  = self::valor($data["codigoBarras"])
+        ]);
     }
 
     private function comparar($valor1, $valor2){
@@ -98,14 +105,19 @@ class Celpe extends Controller{
         return $troco;
     }
 
-    public function dados($dados){
-        $valorConta  = self::valor($dados["codigoBarras"]);
-        $comparar = $this->comparar($dados["valorPago"], $valorConta);
+    public function dados(){
+        
+        $comparar = $this->comparar($_POST["valorPago"], $valorConta);
         if($comparar == false){
-            Alert::error("Realize o pagamento novamente!", "Valor pago pelo cliente é inferior ao valor da conta.", "/painel");
+            parent::renderAviso("Realize o pagamento novamente! Valor pago pelo cliente é inferior ao valor da conta.", "/painel");
             exit();
         }
-        $troco = $this->calcularTroco($dados["valorPago"], $valorConta);
-        Alert::question("Confirma pagamento da conta no valor de ".$valorConta."?", $dados["codigoBarras"], "/celpe/aceitar/".$dados["codigoBarras"]."/".$valorConta."/".$troco, "/celpe/cancelar");
+        $troco = $this->calcularTroco($_POST["valorPago"], $valorConta);
+
+        parent::render("celpeConfirmaDados", [
+            "codigoBarras" => $dados["codigoBarras"],
+            "valorConta" => $valorConta,
+            "troco" => $troco
+        ]);
     }
 }
